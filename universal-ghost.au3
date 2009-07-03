@@ -1,16 +1,15 @@
-﻿#NoTrayIcon
+#NoTrayIcon
 #Region ;**** 参数创建于 ACNWrapper_GUI ****
-#AutoIt3Wrapper_Icon=万能GHOT备份恢复.ico
-#AutoIt3Wrapper_Outfile=..\..\万能GHOT备份恢复.exe
+#AutoIt3Wrapper_icon=万能GHOT备份恢复.ico
+#AutoIt3Wrapper_outfile=..\..\万能GHOT备份恢复.exe
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Res_Comment=运行参数  /yjbf 静默设置备份  /yjhf 静默设置恢复 /dos 静默设置手工GHOST  /cancel 取消已有的设置
 #AutoIt3Wrapper_Res_Description=一键备份恢复程序
-#AutoIt3Wrapper_Res_Fileversion=0.8.8.17
+#AutoIt3Wrapper_Res_Fileversion=0.9.1.22
 #AutoIt3Wrapper_Res_LegalCopyright=JS
 #AutoIt3Wrapper_Res_SaveSource=y
 #AutoIt3Wrapper_Res_Icon_Add=bf.ico
 #AutoIt3Wrapper_Res_Icon_Add=hf.ico
-#AutoIt3Wrapper_Change2CUI=y
 #EndRegion ;**** 参数创建于 ACNWrapper_GUI ****
 #include <GUIConstants.au3>
 #include <Sound.au3>
@@ -57,6 +56,7 @@ If $CmdLine[0] >= 1 Then
 			FileSetAttrib("C:\boot.ini", "-RSH")
 			FileCopy("c:\JS\boot.bak", "c:\boot.ini", 9)
 			FileSetAttrib("C:\boot.ini", "+RSH")
+			If FileExists ( "c:\JS\menu.bak" )=1 Then  FileCopy("c:\JS\menu.bak", "C:\menu.lst", 9)
 			FileSetAttrib("C:\jsgh", "-RSH")
 			FileDelete("c:\jsgh")
 			DirRemove("c:\JS", 1)
@@ -65,7 +65,6 @@ If $CmdLine[0] >= 1 Then
 		EndIf
 		Exit
 	EndIf
-
 EndIf
 
 ;==============================创建界面==============================
@@ -169,11 +168,11 @@ GUICtrlSetState(-1, $GUI_DISABLE)
 $Tab_4 = GUICtrlCreateTabItem("关于")
 GUICtrlCreateGroup("", 15, 100, 370, 200)
 GUICtrlCreateGroup("", 110, 130, 200, 140)
-$ColorEgg2 = GUICtrlCreateLabel("万能GHOST V1.2", 120, 150, 160, 20)
+$ColorEgg2 = GUICtrlCreateLabel("软件名称：万能GHOST", 120, 150,120, 20)
 GUICtrlSetCursor(-1, 0)
 GUICtrlSetColor(-1, 0x008080)
 GUICtrlCreateLabel("程序制作：JS", 120, 170, 93, 20)
-GUICtrlCreateLabel("完成日期：2008年8月17日", 120, 190, 140, 20)
+GUICtrlCreateLabel("完成日期：2009年1月22日", 120, 190, 140, 20)
 GUICtrlCreateLabel("内置GHOST版本：V11.5.0.2113", 120, 210, 180, 20)
 $mailto = GUICtrlCreateLabel("Email：297259024@qq.com", 120, 230, 138, 20)
 GUICtrlSetCursor(-1, 0)
@@ -240,6 +239,7 @@ While 1
 			FileSetAttrib("C:\boot.ini", "-RSH")
 			FileCopy("c:\JS\boot.bak", "c:\boot.ini", 9)
 			FileSetAttrib("C:\boot.ini", "+RSH")
+			If FileExists ( "c:\JS\menu.bak" )=1 Then  FileCopy("c:\JS\menu.bak", "C:\menu.lst", 9)
 			FileSetAttrib("C:\jsgh", "-RSH")
 			FileDelete("c:\jsgh")
 			DirRemove("c:\JS", 1)
@@ -295,7 +295,7 @@ While 1
 			
 			For $Var = 1 To $BFDisk[0] Step 1 ;读取扇区信息
 				If StringInStr($BFDisk[$Var], StringLeft(GUICtrlRead($Tab_2_Combo_1), 1), 0) <> 0 Then
-					$Tab_2_Sector = 'src=' & StringMid($BFDisk[$Var], 13)
+					$Tab_2_Sector = 'src=' & StringMid($BFDisk[$Var], 12)
 				EndIf
 			Next
 			
@@ -376,7 +376,7 @@ While 1
 			
 			For $Var = 1 To $HFDisk[0] Step 1 ;读取扇区信息
 				If StringInStr($HFDisk[$Var], StringLeft(GUICtrlRead($Tab_3_Combo_1), 1), 0) <> 0 Then
-					$Tab_3_Sector = 'dst=' & StringMid($HFDisk[$Var], 13)
+					$Tab_3_Sector = 'dst=' & StringMid($HFDisk[$Var], 12)
 				EndIf
 			Next
 			
@@ -450,6 +450,11 @@ Func _GHOST($Purpose, $Explain, $CmdLine, $Msbox_1, $Msbox_2, $Button)
 		IniWrite("c:\boot.ini", "boot loader", "timeout", "1")
 		IniWrite("c:\boot.ini", "boot loader", "default", "c:\jsgh")
 		IniWrite("c:\boot.ini", "operating systems", "c:\jsgh", "JS万能GHOST")
+		If FileExists ( "C:\menu.lst" )=1 Then  
+		FileCopy("C:\menu.lst", "c:\JS\menu.bak", 8)
+		FileSetAttrib("C:\menu.lst", "-RSH")
+		FileDelete ( "C:\menu.lst" )
+		EndIf
 		FileInstall("JSGH", "c:\")
 		FileInstall("JSGH.img", "c:\JS\")
 		FileInstall("Ghost.exe", "c:\JS\")
