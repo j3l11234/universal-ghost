@@ -1,15 +1,15 @@
 #NoTrayIcon
 #Region ;**** 参数创建于 ACNWrapper_GUI ****
-#AutoIt3Wrapper_icon=万能GHOT备份恢复.ico
-#AutoIt3Wrapper_outfile=..\..\万能GHOT备份恢复.exe
+#AutoIt3Wrapper_icon=resources/icons/万能GHOT备份恢复.ico
+#AutoIt3Wrapper_outfile=/dist/万能GHOT备份恢复.exe
 #AutoIt3Wrapper_Compression=4
 #AutoIt3Wrapper_Res_Comment=运行参数  /yjbf 静默设置备份  /yjhf 静默设置恢复 /dos 静默设置手工GHOST  /cancel 取消已有的设置
 #AutoIt3Wrapper_Res_Description=一键备份恢复程序
 #AutoIt3Wrapper_Res_Fileversion=0.9.1.22
 #AutoIt3Wrapper_Res_LegalCopyright=JS
 #AutoIt3Wrapper_Res_SaveSource=y
-#AutoIt3Wrapper_Res_Icon_Add=bf.ico
-#AutoIt3Wrapper_Res_Icon_Add=hf.ico
+#AutoIt3Wrapper_Res_Icon_Add=resources/icons/bf.ico
+#AutoIt3Wrapper_Res_Icon_Add=resources/icons/hf.ico
 #EndRegion ;**** 参数创建于 ACNWrapper_GUI ****
 #include <GUIConstants.au3>
 #include <Sound.au3>
@@ -70,11 +70,11 @@ EndIf
 ;==============================创建界面==============================
 $GUI = GUICreate("万能GHOT备份恢复", 400, 330, -1, -1)
 GUISetFont(9, 400)
-FileInstall("logo.gif", @TempDir & "\")
+FileInstall("resources\logo.gif", @TempDir & "\")
 $ColorEgg1 = GUICtrlCreatePic(@TempDir & "\logo.gif", 0, 0, 0, 0)
 GUICtrlSetCursor(-1, 0)
 FileDelete(@TempDir & "\logo.gif")
-FileInstall("music.mid", @TempDir & "\")
+FileInstall("resources\music.mid", @TempDir & "\")
 
 $Tab = GUICtrlCreateTab(5, 80, 390, 227)
 
@@ -123,7 +123,7 @@ GUICtrlSetState($Tab_2_Input_2, $GUI_HIDE)
 $Tab_2_Button_2 = GUICtrlCreateButton("选择", 300, 243, 50, 20)
 GUICtrlSetState($Tab_2_Button_2, $GUI_HIDE)
 
-FileInstall("bf.gif", @TempDir & "\")
+FileInstall("resources\bf.gif", @TempDir & "\")
 GUICtrlCreatePic(@TempDir & "\bf.gif", 300, 115, 0, 0)
 FileDelete(@TempDir & "\bf.gif")
 
@@ -157,7 +157,7 @@ GUICtrlSetState($Tab_3_Input_2, $GUI_HIDE)
 $Tab_3_Button_2 = GUICtrlCreateButton("选择", 300, 243, 50, 20)
 GUICtrlSetState($Tab_3_Button_2, $GUI_HIDE)
 
-FileInstall("hf.gif", "c:\")
+FileInstall("resources\hf.gif", "c:\")
 GUICtrlCreatePic("c:\hf.gif", 300, 115, 0, 0)
 FileDelete("c:\hf.gif")
 
@@ -286,7 +286,7 @@ While 1
 		Case $msg = $Tab_2_Button_3
 			SplashTextOn("请稍候", Chr(13) & "正在准备……", 250, 50, 10, 10, 2, 10)
 			
-			FileInstall("disk.exe", @TempDir & "\") ;读取扇区信息
+			FileInstall("resources\disk.exe", @TempDir & "\") ;读取扇区信息
 			Run(@ComSpec & ' /c "' & @TempDir & '\disk.exe"', "", @SW_HIDE)
 			WinWaitActive("分区扇区对应", "")
 			$BFDisk = StringSplit(ControlGetText("分区扇区对应", "", "ThunderRT6TextBox1"), Chr(13))
@@ -367,7 +367,7 @@ While 1
 		Case $msg = $Tab_3_Button_3
 			SplashTextOn("请稍候", Chr(13) & "正在准备……", 250, 50, 10, 10, 2, 10)
 			
-			FileInstall("disk.exe", @TempDir & "\")
+			FileInstall("resources\disk.exe", @TempDir & "\")
 			Run(@ComSpec & ' /c "' & @TempDir & '\disk.exe"', "", @SW_HIDE)
 			WinWaitActive("分区扇区对应", "")
 			$HFDisk = StringSplit(ControlGetText("分区扇区对应", "", "ThunderRT6TextBox1"), Chr(13))
@@ -408,7 +408,7 @@ While 1
 		Case $msg = $ColorEgg2
 			If $ColorEgg = 1 Then
 				$ColorEgg = 0
-				$Music = _SoundOpen(@TempDir & "\music.mid", "Music")
+				$Music = _SoundOpen(@TempDir & "\music.mid")
 				_SoundPlay($Music, 0)
 			EndIf
 			
@@ -455,9 +455,9 @@ Func _GHOST($Purpose, $Explain, $CmdLine, $Msbox_1, $Msbox_2, $Button)
 		FileSetAttrib("C:\menu.lst", "-RSH")
 		FileDelete ( "C:\menu.lst" )
 		EndIf
-		FileInstall("JSGH", "c:\")
-		FileInstall("JSGH.img", "c:\JS\")
-		FileInstall("Ghost.exe", "c:\JS\")
+		FileInstall("resources\JSGH", "c:\")
+		FileInstall("resources\JSGH.img", "c:\JS\")
+		FileInstall("resources\Ghost.exe", "c:\JS\")
 		;==============================设置批处理==============================
 		$BFGhostIni = FileOpen("c:\js\ghost.bat", 10)
 		FileWrite($BFGhostIni, '' & @CRLF & '@echo off' & @CRLF)
@@ -468,7 +468,7 @@ Func _GHOST($Purpose, $Explain, $CmdLine, $Msbox_1, $Msbox_2, $Button)
 		FileWrite($BFGhostIni, 'restart')
 		FileClose($BFGhostIni)
 		DirCreate("d:\Ghost\")
-		FileInstall("Ghost.exe", "d:\Ghost\Ghost.exe")
+		FileInstall("resources\Ghost.exe", "d:\Ghost\Ghost.exe")
 		Sleep(500)
 		
 		If $Msbox_2 = 1 Then
